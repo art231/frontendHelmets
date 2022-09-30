@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helmet-web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helmet-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: helmet-web
+    spec:
+      containers:
+        - name: helmet-web
+          image: gcr.io/zerno-dispatcher/bitbucket.org/lbseb/web.helmets:0bb70640699810224dc87594dd7984d0e40273ca
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_HOST
+              value: http://10.9.0.2/helmet-saver
+            - name: API_HOST_AUTH
+              value: http://10.9.0.5

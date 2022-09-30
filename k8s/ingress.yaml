@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: test-nginx-ingress
+spec:
+  backend:
+    serviceName: helmets-web-nodeport
+    servicePort: 80
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: helmets-web-nodeport
+              servicePort: 80
+          - path: /helmet-saver
+            backend:
+              serviceName: helmets-saver-nodeport
+              servicePort: 80
